@@ -1,117 +1,290 @@
-usuarios = []
-rebanho = []  
-producao = []
+usuarios = [
+    ['admin', '123', 1],
+    ['cliente', '123', 2]
+]
+
+animais = []
+
+produtos = []
+
 agendamentos = []
 
 while True:
-    print("\n" + "="*40)
-    print("      APP FAZENDA SERTÃO")
-    print("="*40)
-    print("1 - Efetuar login no App")
-    print("2 - Cadastrar novo Usuario")
-    print("0 - Sair\n")
 
-    menu = input("Digite a opção desejada! ")
+    # MENU PRINCIPAL
 
-    if menu == "0":
-        print("Encerrando...")
-        break
-    
-    elif menu == "1":
-        login = input("Login: ")
-        senha = input("Senha: ")
-        encontrado = False
-        usuario_atual = None
+    print('\n======================')
+    print('FAZENDA SERTÃO')
+    print('======================')
+    print('1 - Cadastrar usuário')
+    print('2 - Login')
+    print('3 - Sair')
 
-        for i in usuarios:
-            if i[0] == login and i[1] == senha:
-                encontrado = True
-                usuario_atual = i
-                print(f"\nBem-vindo, {login}!")
-                break
+    opcao = input('Digite a opção: ')
 
-        if encontrado:
-            while True:
-                print("\n" + "="*40)
-                print(f"   MENU PRINCIPAL - {login}")
-                print("="*40)
-                
-                if usuario_atual[2] == "1":
-                    print("1 - Gerenciar Rebanho (ADM)")
-                    print("2 - Gerenciar Produção (ADM)")
-                else:
-                    print("3 - Efetuar Compra (Cliente)")
-                    print("4 - Agendar Retirada (Cliente)")
-                
-                print("0 - Logout (Sair)")
+    if opcao == '1':
 
-                opcao_logado = input("Escolha uma opção: ")
+        nome = input('Digite o usuário: ')
+        senha = input('Digite a senha: ')
 
-                if opcao_logado == "0":
+        tipo = input('Tipo 1 - ADM 2 - CLIENTE: ')
+
+        if tipo.isdigit():
+
+            tipo = int(tipo)
+
+            if tipo == 1 or tipo == 2:
+
+                u = [nome, senha, tipo]
+
+                usuarios.append(u)
+
+                print('Usuário cadastrado')
+
+            else:
+                print('Tipo inválido')
+
+        else:
+            print('Tipo inválido')
+
+    elif opcao == '2':
+
+        nome = input('Usuário: ')
+        senha = input('Senha: ')
+
+        if nome == '' or senha == '':
+
+            print('Login e senha não podem ser vazios')
+
+        else:
+
+            logado = False
+            usuario = []
+
+            for u in usuarios:
+
+                if u[0] == nome and u[1] == senha:
+
+                    logado = True
+                    usuario = u
                     break
 
-                elif opcao_logado == "1" and usuario_atual[2] == "1":
-                    print("\n--- CADASTRAR NO REBANHO ---")
-                    tipo_a = input("Tipo do animal: ")
-                    id_a = input("ID (Brinco): ")
-                    status_a = input("Status: ")
-                    rebanho.append([tipo_a, id_a, status_a])
-                    print("Animal cadastrado com sucesso!")
+            if logado:
 
-                elif opcao_logado == "2" and usuario_atual[2] == "1":
-                    print("\n--- CADASTRAR PRODUÇÃO ---")
-                    item = input("Produto: ")
-                    qtd = int(input("Quantidade em estoque (número): "))
-                    valor = input("Valor de venda: R$ ")
-                    producao.append([item, qtd, valor])
-                    print("Estoque atualizado!")
+                # MENU ADMINISTRADOR
 
-                elif opcao_logado == "3" and usuario_atual[2] == "2":
-                    print("\n--- PRODUTOS DISPONÍVEIS ---")
-                    posicao = 0
-                    for p in producao:
-                        print(f"{posicao} - {p[0]} | Disponível: {p[1]} | Preço: {p[2]}")
-                        posicao = posicao + 1
-                    
-                    if len(producao) == 0:
-                        print("Não há produtos no estoque.")
-                    else:
-                        escolha = int(input("\nDigite o número do produto: "))
-                        qtd_compra = int(input("Quanto deseja comprar? "))
-                        
-                        if escolha < len(producao):
-                            if producao[escolha][1] >= qtd_compra:
-                                producao[escolha][1] = producao[escolha][1] - qtd_compra
-                                print(f"\nCompra de {qtd_compra} unidade(s) realizada!")
+                if usuario[2] == 1:
+
+                    while True:
+
+                        print('\n===================')
+                        print('MENU ADMINISTRADOR')
+                        print('===================')
+                        print('1 - Cadastrar animal')
+                        print('2 - Listar animais')
+                        print('3 - Atualizar animal')
+                        print('4 - Remover animal')
+                        print('5 - Cadastrar produto')
+                        print('6 - Ver estoque')
+                        print('7 - Ver agendamentos')
+                        print('8 - Sair')
+
+                        op = input('Digite a opção: ')
+
+                        if op == '1':
+
+                            tipo = input('Tipo do animal - Ex: bovino, caprino, suino: ')
+
+                            brinco = input('Número/brinco - Ex: 1,2,3...: ')
+                            
+                            status = input('Status - Ex: em lactação, engorda, venda: ')
+
+                            a = [tipo, brinco, status]
+
+                            animais.append(a)
+
+                            print('Animal cadastrado')
+
+                        elif op == '2':
+
+                            print('\nLISTA DE ANIMAIS')
+
+                            for a in animais:
+
+                                print('Tipo:', a[0])
+                                print('Brinco:', a[1])
+                                print('Status:', a[2])
+                                print('----------------')
+
+                        elif op == '3':
+
+                            brinco = input('Digite o brinco: ')
+
+                            for a in range(len(animais)):
+
+                                if animais[a][1] == brinco:
+
+                                    novo = input('Novo status: ')
+
+                                    animais[a][2] = novo
+
+                                    print('Animal atualizado')
+
+                        elif op == '4':
+
+                            brinco = input('Digite o brinco: ')
+
+                            for a in animais:
+
+                                if a[1] == brinco:
+
+                                    animais.remove(a)
+
+                                    print('Animal removido')
+
+                                    break
+
+                        elif op == '5':
+
+                            nome = input('Nome do produto - Ex: queijo coalho, queijo manteiga: ')
+                            qtd = float(input('Quantidade: '))
+                            valor = float(input('Valor: '))
+
+                            p = [nome, qtd, valor]
+
+                            produtos.append(p)
+
+                            print('Produto cadastrado')
+
+                        elif op == '6':
+
+                            print('\nESTOQUE')
+
+                            for p in produtos:
+
+                                print('Produto:', p[0])
+                                print('Quantidade:', p[1])
+                                print('Valor:', p[2])
+                                print('----------------')
+
+                        elif op == '7':
+
+                            print('\nAGENDAMENTOS')
+
+                            if len(agendamentos) == 0:
+
+                                print('Nenhum agendamento encontrado')
+
                             else:
-                                print("\nQuantidade insuficiente no estoque!")
+
+                                for a in agendamentos:
+
+                                    print('Cliente:', a[0])
+                                    print('Produto:', a[1])
+                                    print('Data:', a[2])
+                                    print('Hora:', a[3])
+                                    print('----------------')
+
+                        elif op == '8':
+
+                            print('Saindo do sistema')
+
+                            break
+
                         else:
-                            print("\nProduto inválido!")
 
-                elif opcao_logado == "4" and usuario_atual[2] == "2":
-                    print("\n--- AGENDAR RETIRADA ---")
-                    data = input("Data para retirada (ex: 15/05): ")
-                    hora = input("Horário (ex: 08:30): ")
-                    carga = input("O que será retirado? ")
-                    
-                    agendamentos.append([login, data, hora, carga])
-                    print(f"\nAgendamento realizado para {data} às {hora}!")
+                            print('Opção inválida')
 
-        else:
-            print("\nLogin ou senha incorretos.")
+                # MENU CLIENTE
 
-    elif menu == "2":
-        login = input("Login: ")
-        senha = input("Senha: ")
-        if login == "" or senha == "":
-            print("\nErro: Login e senha não podem ser vazios.")
-        else:
-            print("\nNível de acesso:")
-            print("1 - Administrador")
-            print("2 - Cliente")
-            tipo = input("Escolha: ")
-            usuarios.append([login, senha, tipo])
-            print(f"Usuário {login} cadastrado!")
-    
+                elif usuario[2] == 2:
+
+                    while True:
+
+                        print('\n===================')
+                        print('MENU CLIENTE')
+                        print('===================')
+                        print('1 - Ver produtos')
+                        print('2 - Ver animais')
+                        print('3 - Comprar produto')
+                        print('4 - Agendar retirada')
+                        print('5 - Sair')
+
+                        op = input('Digite a opção: ')
+
+                        if op == '1':
+
+                            print('\nPRODUTOS')
+
+                            for p in produtos:
+
+                                print('Produto:', p[0])
+                                print('Quantidade:', p[1])
+                                print('Valor:', p[2])
+                                print('----------------')
+
+                        elif op == '2':
+
+                            print('\nLISTA DE ANIMAIS')
+
+                            for a in animais:
+
+                                print('Tipo:', a[0])
+                                print('Brinco:', a[1])
+                                print('Status:', a[2])
+                                print('----------------')
+
+                        elif op == '3':
+
+                            nome_produto = input('Nome do produto: ')
+                            qtd = float(input('Quantidade: '))
+
+                            for p in range(len(produtos)):
+
+                                if produtos[p][0] == nome_produto:
+
+                                    if produtos[p][1] >= qtd:
+
+                                        produtos[p][1] = produtos[p][1] - qtd
+
+                                        print('Compra realizada')
+
+                                    else:
+
+                                        print('Estoque insuficiente')
+
+                        elif op == '4':
+
+                            produto = input('Produto: ')
+                            data = input('Data: ')
+                            hora = input('Hora: ')
+
+                            a = [usuario[0], produto, data, hora]
+
+                            agendamentos.append(a)
+
+                            print('Retirada agendada')
+
+                        elif op == '5':
+
+                            print('Saindo do sistema')
+
+                            break
+
+                        else:
+
+                            print('Opção inválida')
+
+            else:
+
+                print('Usuário inválido')
+
+    elif opcao == '3':
+
+        print('Sistema encerrado')
+
+        break
+
     else:
-        print("Opção inválida!")
+
+        print('Opção inválida')
