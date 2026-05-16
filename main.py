@@ -3,9 +3,18 @@ usuarios = [
     ['cliente', '123', 2]
 ]
 
-animais = []
+animais = [
+    ['bovino', 1, 11, 'venda', 100.00],
+    ['cabra', 2, 15, 'venda', 10.00],
+    ['bode', 3, 10, 'engorda', 30.00]
+]
 
-produtos = []
+produtos = [
+    ['leite', 10, 5.00],
+    ['leite', 11, 5.50],
+    ['queijo coalho', 100, 36.00],
+    ['queijo manteiga', 1000, 42.00]
+]
 
 agendamentos = []
 
@@ -14,7 +23,7 @@ while True:
     # MENU PRINCIPAL
 
     print('======================')
-    print('FAZENDA SERTÃO')
+    print('FAZENDA SERTÃO') 
     print('======================')
     print('1 - Cadastrar usuário')
     print('2 - Login')
@@ -99,9 +108,11 @@ while True:
                         print('3 - Atualizar animal')
                         print('4 - Remover animal')
                         print('5 - Cadastrar produto')
-                        print('6 - Ver estoque')
-                        print('7 - Ver agendamentos')
-                        print('8 - Retornar ao menu inicial')
+                        print('6 - Atualizar produto')
+                        print('7 - Remover produto')
+                        print('8 - Estoque de produtos')
+                        print('9 - Ver agendamentos')
+                        print('10 - Retornar ao menu inicial')
 
                         op = input('Digite a opção: ')
 
@@ -141,7 +152,8 @@ while True:
 
                                 print('Tipo:', a[0])
                                 print('Brinco:', a[1])
-                                print('Status:', a[2])
+                                print('Quantidade:', a[2])
+                                print('Status:', a[3])
                                 print('----------------')
 
                         elif op == '3':
@@ -186,7 +198,53 @@ while True:
 
                         elif op == '6':
 
-                            print('ESTOQUE')
+                            nome_produto = input('Digite o Produto: ')
+
+                            encontrado = False
+
+                            for a in range(len(produtos)):
+
+                                if produtos[a][0] == nome_produto:
+
+                                    novo = input('Novo nome do produto: ')
+
+                                    produtos[a][0] = novo
+
+                                    encontrado = True
+
+                                    print('Produto atualizado')
+
+                                    break
+                            
+                            if encontrado == False:
+
+                                print('Produto não encontrado')
+
+                        elif op == '7':
+
+                            nome_produto = input('Digite o produto: ')
+
+                            encontrado = False
+
+                            for p in produtos:
+
+                                if p[0] == nome_produto:
+
+                                    produtos.remove(p)
+
+                                    encontrado = True
+
+                                    print('Produto removido')
+
+                                    break
+
+                            if encontrado == False:
+
+                                print('Produto não encontrado')
+
+                        elif op == '8':
+
+                            print('ESTOQUE DE PRODUTOS')
 
                             for p in produtos:
 
@@ -195,7 +253,7 @@ while True:
                                 print('Valor:', p[2])
                                 print('----------------')
 
-                        elif op == '7':
+                        elif op == '9':
 
                             print('AGENDAMENTOS')
 
@@ -213,7 +271,7 @@ while True:
                                     print('Hora:', a[3])
                                     print('----------------')
 
-                        elif op == '8':
+                        elif op == '10':
 
                             print('Saindo do sistema')
 
