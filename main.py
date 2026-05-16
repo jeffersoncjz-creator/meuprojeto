@@ -93,13 +93,27 @@ while True:
 
                         if op == '1':
 
+                            brincos = []
+
+                            for anm in animais:
+
+                                brincos.append(anm[1])
+
                             tipo = input('Tipo do animal - Ex: bovino, caprino, suino: ')
 
                             brinco = input('Número/brinco - Ex: 1,2,3...: ')
+
+                            while brinco in brincos:
+
+                                print("ID brinco já cadastrado")
+
+                                brinco = input('Número/brinco - Ex: 1,2,3...: ')
                             
                             status = input('Status - Ex: em lactação, engorda, venda: ')
 
-                            a = [tipo, brinco, status]
+                            valor = float(input('Digite o valor do animal: '))
+
+                            a = [tipo, brinco, status, valor,1]
 
                             animais.append(a)
 
@@ -146,7 +160,7 @@ while True:
 
                         elif op == '5':
 
-                            nome = input('Nome do produto - Ex: queijo coalho, queijo manteiga: ')
+                            nome = input('Nome do produto - Ex: leite, queijo coalho, queijo manteiga: ')
                             qtd = float(input('Quantidade: '))
                             valor = float(input('Valor: '))
 
@@ -207,17 +221,21 @@ while True:
                         print('1 - Ver produtos')
                         print('2 - Ver animais')
                         print('3 - Comprar produto')
-                        print('4 - Agendar retirada')
-                        print('5 - Sair')
+                        print('4 - Comprar animal')
+                        print('5 - Agendar retirada')
+                        print('6 - Sair')
 
                         op = input('Digite a opção: ')
 
                         if op == '1':
 
-                            print('\nPRODUTOS')
-
+                            print('\nPRODUTOS');
+                            if len(produtos) == 0:
+                                print('----------------')
+                                print("Nenhum Produto Disponível")
+                                print('----------------')
                             for p in produtos:
-
+                                print('----------------')
                                 print('Produto:', p[0])
                                 print('Quantidade:', p[1])
                                 print('Valor:', p[2])
@@ -227,6 +245,12 @@ while True:
 
                             print('\nLISTA DE ANIMAIS')
 
+
+                            if len(animais) == 0:
+                                print('----------------')
+                                print("Nenhum Animal Disponível")
+                                print('----------------')
+
                             for a in animais:
 
                                 print('Tipo:', a[0])
@@ -235,25 +259,70 @@ while True:
                                 print('----------------')
 
                         elif op == '3':
+                            if len(produtos) > 0:
+                                print("Produtos Disponíveis")
+                                for p in produtos:
+                                    print('----------------')
+                                    print('Produto:', p[0])
+                                    print('Quantidade:', p[1])
+                                    print('Valor:', p[2])
+                                    print('----------------')
 
-                            nome_produto = input('Nome do produto: ')
-                            qtd = float(input('Quantidade: '))
 
-                            for p in range(len(produtos)):
+                                nome_produto = input('Nome do produto: ')
+                                qtd = float(input('Quantidade: '))
 
-                                if produtos[p][0] == nome_produto:
+                                for p in range(len(produtos)):
 
-                                    if produtos[p][1] >= qtd:
+                                    if produtos[p][0] == nome_produto:
 
-                                        produtos[p][1] = produtos[p][1] - qtd
+                                        if produtos[p][1] >= qtd:
 
-                                        print('Compra realizada')
+                                            produtos[p][1] = produtos[p][1] - qtd
 
-                                    else:
+                                            print('Compra realizada')
 
-                                        print('Estoque insuficiente')
+                                        else:
+
+                                            print('Estoque insuficiente')
+                            else:
+                                print('----------------')
+                                print("Nenhum Produto Disponível")
+                                print('----------------')
 
                         elif op == '4':
+                            if len(animais) > 0:
+                                print("Animais Disponíveis")
+                                for p in animais:
+                                    print('----------------')
+                                    print('Animal:', p[0])
+                                    print('Quantidade:', p[4])
+                                    print('Valor:', p[3])
+                                    print('----------------')
+
+
+                                nome_produto = input('Nome do produto: ')
+                                qtd = float(input('Quantidade: '))
+
+                                for p in range(len(animais)):
+
+                                    if animais[p][0] == nome_produto:
+
+                                        if animais[p][4] >= qtd:
+
+                                            animais[p][4] = animais[p][4] - qtd
+
+                                            print('Compra realizada')
+
+                                        else:
+
+                                            print('Estoque insuficiente')
+                            else:
+                                print('----------------')
+                                print("Nenhum Animal Disponível")
+                                print('----------------')
+
+                        elif op == '5':
 
                             produto = input('Produto: ')
                             data = input('Data: ')
@@ -265,7 +334,7 @@ while True:
 
                             print('Retirada agendada')
 
-                        elif op == '5':
+                        elif op == '6':
 
                             print('Saindo do sistema')
 
