@@ -13,7 +13,7 @@ while True:
 
     # MENU PRINCIPAL
 
-    print('\n======================')
+    print('======================')
     print('FAZENDA SERTÃO')
     print('======================')
     print('1 - Cadastrar usuário')
@@ -91,7 +91,7 @@ while True:
 
                     while True:
 
-                        print('\n===================')
+                        print('===================')
                         print('MENU ADMINISTRADOR')
                         print('===================')
                         print('1 - Cadastrar animal')
@@ -101,7 +101,7 @@ while True:
                         print('5 - Cadastrar produto')
                         print('6 - Ver estoque')
                         print('7 - Ver agendamentos')
-                        print('8 - Sair')
+                        print('8 - Retornar ao menu inicial')
 
                         op = input('Digite a opção: ')
 
@@ -135,7 +135,7 @@ while True:
 
                         elif op == '2':
 
-                            print('\nLISTA DE ANIMAIS')
+                            print('LISTA DE ANIMAIS')
 
                             for a in animais:
 
@@ -186,7 +186,7 @@ while True:
 
                         elif op == '6':
 
-                            print('\nESTOQUE')
+                            print('ESTOQUE')
 
                             for p in produtos:
 
@@ -197,7 +197,7 @@ while True:
 
                         elif op == '7':
 
-                            print('\nAGENDAMENTOS')
+                            print('AGENDAMENTOS')
 
                             if len(agendamentos) == 0:
 
@@ -229,7 +229,7 @@ while True:
 
                     while True:
 
-                        print('\n===================')
+                        print('===================')
                         print('MENU CLIENTE')
                         print('===================')
                         print('1 - Ver produtos')
@@ -237,18 +237,22 @@ while True:
                         print('3 - Comprar produto')
                         print('4 - Comprar animal')
                         print('5 - Agendar retirada')
-                        print('6 - Sair')
+                        print('6 - Retornar ao menu inicial')
 
                         op = input('Digite a opção: ')
 
                         if op == '1':
 
-                            print('\nPRODUTOS');
+                            print('PRODUTOS')
+
                             if len(produtos) == 0:
+
                                 print('----------------')
                                 print("Nenhum Produto Disponível")
                                 print('----------------')
+
                             for p in produtos:
+
                                 print('----------------')
                                 print('Produto:', p[0])
                                 print('Quantidade:', p[1])
@@ -257,7 +261,7 @@ while True:
 
                         elif op == '2':
 
-                            print('\nLISTA DE ANIMAIS')
+                            print('LISTA DE ANIMAIS')
 
 
                             if len(animais) == 0:
@@ -315,18 +319,17 @@ while True:
                                     print('----------------')
 
 
-                                nome_produto = input('Nome do produto: ')
+                                nome_animais = input('Nome do animal: ')
                                 qtd = float(input('Quantidade: '))
 
                                 for p in range(len(animais)):
 
-                                    if animais[p][0] == nome_produto:
+                                    if animais[p][0] == nome_animais:
 
                                         if animais[p][4] >= qtd:
 
                                             animais[p][4] = animais[p][4] - qtd
-
-                                            print('Compra realizada')
+                                            print('Compra realizada') 
 
                                         else:
 
