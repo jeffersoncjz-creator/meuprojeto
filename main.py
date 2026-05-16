@@ -34,12 +34,26 @@ while True:
             tipo = int(tipo)
 
             if tipo == 1 or tipo == 2:
+                usuario_existe = False
 
-                u = [nome, senha, tipo]
+                for u in usuarios:
 
-                usuarios.append(u)
+                    if u[0] == nome:
 
-                print('Usuário cadastrado')
+                        usuario_existe = True
+                        break
+
+                if usuario_existe:
+
+                    print('Usuário já cadastrado')
+
+                else:
+
+                    u = [nome, senha, tipo]
+
+                    usuarios.append(u)
+
+                    print('Usuário cadastrado')
 
             else:
                 print('Tipo inválido')
