@@ -1,20 +1,8 @@
-usuarios = [
-    ['admin', '123', 1],
-    ['cliente', '123', 2]
-]
+usuarios = []
 
-animais = [
-    ['bovino', 1, 11, 'venda', 100.00],
-    ['cabra', 2, 15, 'venda', 10.00],
-    ['bode', 3, 10, 'engorda', 30.00]
-]
+animais = []
 
-produtos = [
-    ['leite', 10, 5.00],
-    ['leite', 11, 5.50],
-    ['queijo coalho', 100, 36.00],
-    ['queijo manteiga', 1000, 42.00]
-]
+produtos = []
 
 agendamentos = []
 
@@ -126,8 +114,6 @@ while True:
 
                             tipo = input('Tipo do animal - Ex: bovino, caprino, suino: ')
 
-                            qtd = int(input('Digite a quantidade: '))
-
                             brinco = input('Número/brinco - Ex: 1,2,3...: ')
 
                             while brinco in brincos:
@@ -140,7 +126,7 @@ while True:
 
                             valor = float(input('Digite o valor do animal: '))
 
-                            a = [tipo, qtd, brinco, status, valor,1]
+                            a = [tipo, 1, brinco, status, valor]
 
                             animais.append(a)
 
@@ -154,7 +140,6 @@ while True:
 
                                 print('Tipo:', a[0])
                                 print('Brinco:', a[2])
-                                print('Quantidade:', a[1])
                                 print('Status:', a[3])
                                 print('Valor:', a[4])
                                 print('----------------')
@@ -334,7 +319,6 @@ while True:
 
                                 print('Tipo:', a[0])
                                 print('Brinco:', a[2])
-                                print('Quantidade:', a[1])
                                 print('Status:', a[3])
                                 print('Valor:', a[4])
                                 print('----------------')
@@ -378,14 +362,13 @@ while True:
                                     print('----------------')
                                     print('Tipo:', a[0])
                                     print('Brinco:', a[2])
-                                    print('Quantidade:', a[1])
                                     print('Status:', a[3])
                                     print('Valor:', a[4])
                                     print('----------------')
 
 
                                 nome_animais = input('Nome do animal: ')
-                                qtd = float(input('Quantidade: '))
+                                #qtd = float(input('Quantidade: '))
 
                                 for a in range(len(animais)):
 
@@ -393,7 +376,7 @@ while True:
 
                                         if animais[a][1] >= qtd:
 
-                                            animais[a][1] = animais[a][1] - qtd
+                                            animais[a][1] = animais[a][1] - 1
                                             print('Compra realizada') 
 
                                         else:
