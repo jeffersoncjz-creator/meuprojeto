@@ -367,18 +367,17 @@ while True:
                                     print('----------------')
 
 
-                                nome_animais = input('Nome do animal: ')
-                                #qtd = float(input('Quantidade: '))
+                                brinco_animal = input('Digite o brinco do animal: ')
 
                                 for a in range(len(animais)):
 
-                                    if animais[a][0] == nome_animais:
+                                    if animais[a][2] == brinco_animal:
 
-                                        if animais[a][1] >= qtd:
+                                        if animais[a][1] == 1:
 
                                             animais[a][1] = animais[a][1] - 1
                                             print('Compra realizada') 
-
+                                            animais.remove(animais[a])
                                         else:
 
                                             print('Estoque insuficiente')
