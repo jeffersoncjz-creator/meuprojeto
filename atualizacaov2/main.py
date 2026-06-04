@@ -22,23 +22,20 @@ while True:
     print('======================')
     print('1 - Cadastrar usuário')
     print('2 - Login')
-    print('3 - Sair')
+    print('0 - Sair')
     print('======================')
 
-    # 1. LOOP DO MENU INICIAL: Repete até digitar 1, 2 ou 3
     while True:
         opcao = input('Digite a opção: ')
-        if opcao in ['1', '2', '3']:
+        if opcao in ['1', '2', '0']:
             break
         else:
-            print('Opção inválida! Digite 1, 2 ou 3.\n')
+            print('Opção inválida! Digite 1, 2 ou 0.\n')
 
-    # OPÇÃO 1: CADASTRAR USUÁRIO
     if opcao == '1':
         nome = input('Digite o usuário: ')
         senha = input('Digite a senha: ')
         
-        # 2. LOOP DO TIPO DE USUÁRIO: Repete até digitar 1 ou 2
         while True:
             tipo = input('Tipo (1 - ADMINISTRADOR | 2 - CLIENTE): ')
             if tipo in ['1', '2']:
@@ -52,7 +49,6 @@ while True:
         else:
             print('\nEste nome de usuário já está cadastrado. Tente outro.')
 
-    # OPÇÃO 2: LOGIN (ENTRAR NO SISTEMA DE ANIMAIS)
     elif opcao == '2':
         nome = input('Usuário: ')
         senha = input('Senha: ')
@@ -63,7 +59,6 @@ while True:
             funcao = "ADMINISTRADOR" if usuario == "1" else "CLIENTE"
             print(f'\nBem-vindo, {nome}! Você está logado com sucesso como {funcao}!')
             
-            # --- SUBMENU DOS ANIMAIS (SÓ ENTRA SE LOGAR) ---
             while True:
                 iniciarMenuAnimais()
                 opcao_animal = input('Digite a opção: ')
@@ -92,6 +87,6 @@ while True:
             print('\nUsuário ou senha incorretos.')
 
 
-    elif opcao == '3':
+    elif opcao == '0':
         print('\nSistema encerrado. Até logo!')
         break

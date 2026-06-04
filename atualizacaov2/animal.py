@@ -2,7 +2,6 @@
 
 animais = []
 
-# funções da lista de animais
 def cadastrarAnimal():
     print('\n--- CADASTRO DE ANIMAL ---')
     brinco = input('Digite o brinco: ')
@@ -47,7 +46,6 @@ def alterarAnimal(brinco):
             nome = input('Digite o novo nome: ')
             brinco_novo = input('Digite o novo brinco: ')
             
-            # Validação extra opcional: Se ele mudar o brinco, checa se o novo brinco já não existe em OUTRO animal
             if brinco_novo != brinco:
                 for a in animais:
                     if a['brinco'] == brinco_novo:
