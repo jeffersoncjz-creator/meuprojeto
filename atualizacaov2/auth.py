@@ -23,3 +23,34 @@ def login(login, senha):
                 return dados[2]
                 
     return None 
+
+
+def menu_user_cadastrar():
+    nome = input('Digite o usuário: ')
+    senha = input('Digite a senha: ')
+    
+    while True:
+        tipo = input('Tipo (1 - ADMINISTRADOR | 2 - CLIENTE): ')
+        if tipo in ['1', '2']:
+            break
+        else:
+            print('Tipo inválido! Por favor, digite apenas 1 ou 2.\n')
+
+    sucesso = cadastrausuario(nome, senha, tipo)
+    if sucesso:
+        print('\nUsuário cadastrado com sucesso!')
+    else:
+        print('\nEste nome de usuário já está cadastrado. Tente outro.')
+
+def menu_user_login():
+    nome = input('Usuário: ')
+    senha = input('Senha: ')
+    
+    usuario = login(nome, senha)
+    
+    if usuario:
+        funcao = "ADMINISTRADOR" if usuario == "1" else "CLIENTE"
+        print(f'\nBem-vindo, {nome}! Você está logado com sucesso como {funcao}!')
+        return funcao
+    else:
+        return None

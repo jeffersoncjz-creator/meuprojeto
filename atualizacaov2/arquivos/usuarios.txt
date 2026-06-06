@@ -3,3 +3,4 @@ qw;qw;2
 1;1;1
 asdf;asdf;1
 sd;sd;1
+io;io;2

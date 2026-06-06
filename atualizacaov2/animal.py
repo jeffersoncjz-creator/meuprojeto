@@ -26,7 +26,8 @@ def buscarAnimalPorNome(nome):
             print(a['nome'], ' | ', a['brinco'], ' | ', a['valor']) 
     print('-' * 50)
 
-def buscarAnimalPorBrinco(brinco):
+def buscarAnimalPorBrinco():
+    brinco = input('Digite o brinco do animal: ')
     print('-' * 50)
     for a in animais:
         if a['brinco'] == brinco:
