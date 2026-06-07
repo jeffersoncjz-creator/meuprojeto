@@ -1,3 +1,4 @@
-vaca,1,1000
-garrot,6,1000
+garrote,6,1000
 bode,3,500
+cabrito,4,100
+bode,2,500

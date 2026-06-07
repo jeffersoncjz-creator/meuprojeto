@@ -1,13 +1,35 @@
-
+# main.py
 import auth as user
 import animal as fa
 import produtos as pd
 
-
 fa.iniciarArquivo()
-
 pd.iniciarArquivo()
 
+def iniciarMenuCliente(nome_do_usuario):
+    while True:
+        print('\n==================== MENU CLIENTE ====================')
+        print('1 - VER PRODUTOS DISPONÍVEIS')
+        print('2 - COMPRAR PRODUTO')
+        print('3 - VER ANIMAIS DISPONÍVEIS')
+        print('4 - COMPRAR ANIMAIS')
+        print('0 - RETORNAR MENU INICIAL')
+        print('======================================================')
+
+        while True:
+            op = input('Digite a opção: ').strip()
+            if op in ['1', '2','3','4', '0']:
+                break
+            else:
+                print('Opção inválida! Digite novamente.\n')
+        
+        if   op == "1": pd.listarProdutos()
+        elif op == "2": pd.venderProduto(nome_do_usuario)
+        elif op == "3": fa.listarAnimais()
+        elif op == "4": fa.comprarAnimal(nome_do_usuario)
+        elif op == "0":
+            print("Retornando ao menu inicial...")
+            break
 
 def iniciarMenuAnimais():
     while True:
@@ -65,14 +87,17 @@ while True:
             print('Opção inválida! Digite 1, 2 ou 0.\n')
 
     if opcao == '1':
-        user.menu_user()
+        user.menu_user_cadastrar()
     elif opcao == '2':
+        
         usuario = user.menu_user_login()
+        
         if usuario == "ADMINISTRADOR":
             iniciarMenuAnimais()
         elif usuario == "CLIENTE":
-            # menu_cliente()
-            pass
+            
+            nome_cliente = input('Confirme seu nome para o extrato de compras: ').strip()
+            iniciarMenuCliente(nome_cliente) 
         else:
             print("Usuário não encontrado ou credenciais incorretas.")
             

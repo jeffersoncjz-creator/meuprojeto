@@ -4,3 +4,4 @@ qw;qw;2
 asdf;asdf;1
 sd;sd;1
 io;io;2
+ediclea;12345;1

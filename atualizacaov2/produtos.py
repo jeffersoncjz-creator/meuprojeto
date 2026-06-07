@@ -71,6 +71,59 @@ def apagarProduto(codigo):
             print('Produto removido com sucesso!')
             break
 
+
+def venderProduto(nome_cliente):
+    print('\n--- VENDA DE PRODUTO ---')
+    codigo = input('Digite o código do produto que deseja comprar: ').strip()
+    
+    for posicao in range(len(produtos)):
+        if produtos[posicao]['codigo'] == codigo:
+            try:
+                qtd_venda = float(input(f"Quantidade em estoque: {produtos[posicao]['quantidade']}. Quanto deseja comprar? ").strip())
+            except ValueError:
+                print('Quantidade inválida!')
+                return
+                
+            qtd_atual = float(produtos[posicao]['quantidade'])
+            
+
+            if qtd_venda > qtd_atual:
+                print(f"\nErro: Estoque insuficiente! Você tentou comprar {qtd_venda}, mas só temos {qtd_atual} em estoque.")
+                print("Venda cancelada!\n")
+                return
+            
+
+            nova_qtd = qtd_atual - qtd_venda
+            produtos[posicao]['quantidade'] = str(nova_qtd)
+            
+
+            preco_unitario = float(produtos[posicao]['valor'])
+            total_pago = preco_unitario * qtd_venda
+            
+            print(f"\nVenda realizada com sucesso para o cliente: {nome_cliente}!")
+            print(f"Total a pagar: R$ {total_pago:.2f}\n")
+            
+            nome_extrato = f"atualizacaov2/arquivos/extrato_{nome_cliente}.txt"
+            with open(nome_extrato, "a", encoding="utf-8") as extrato:
+                extrato.write("="*40 + "\n")
+                extrato.write("          EXTRATO DE COMPRA          \n")
+                extrato.write("="*40 + "\n")
+                extrato.write(f"Cliente: {nome_cliente}\n")
+                extrato.write(f"Produto: {produtos[posicao]['nome']}\n")
+                extrato.write(f"Código: {produtos[posicao]['codigo']}\n")
+                extrato.write(f"Quantidade Comprada: {qtd_venda}\n")
+                extrato.write(f"Preço Unitário: R$ {preco_unitario:.2f}\n")
+                extrato.write(f"Valor Total: R$ {total_pago:.2f}\n")
+                extrato.write("="*40 + "\n\n")
+            
+            print(f"Extrato impresso e salvo em: {nome_extrato}")
+            
+            salvarArquivo()
+            return
+            
+    print('Produto não encontrado!')
+
+
 def salvarArquivo():
     with open("atualizacaov2/arquivos/produtos.txt", "w", encoding="utf-8") as arq:
         for p in produtos:

@@ -1,0 +1,20 @@
+========================================
+          EXTRATO DE COMPRA          
+========================================
+Cliente: Jeff
+Item: vaca (Animal)
+Brinco: 1
+Valor Pago: R$ 1000
+========================================
+
+========================================
+          EXTRATO DE COMPRA          
+========================================
+Cliente: jeff
+Produto: arroz
+Código: 22
+Quantidade Comprada: 10.0
+Preço Unitário: R$ 4.00
+Valor Total: R$ 40.00
+========================================
+

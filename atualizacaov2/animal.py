@@ -68,6 +68,39 @@ def apagarAnimal(brinco):
             print('Animal removido com sucesso!')
             break
 
+def comprarAnimal(nome_cliente):
+    print('\n--- COMPRA DE ANIMAL ---')
+    brinco = input('Digite o brinco do animal que deseja comprar: ').strip()
+    
+
+    for posicao in range(len(animais)):
+        if animais[posicao]['brinco'] == brinco:
+            
+            animal_comprado = animais.pop(posicao)
+            
+            print(f"\nCompra realizada com sucesso para o cliente: {nome_cliente}!")
+            print(f"Animal: {animal_comprado['nome']} | Valor: R$ {animal_comprado['valor']}\n")
+            
+            nome_extrato = f"atualizacaov2/arquivos/extrato_{nome_cliente}.txt"
+            with open(nome_extrato, "a", encoding="utf-8") as extrato:
+                extrato.write("="*40 + "\n")
+                extrato.write("          EXTRATO DE COMPRA          \n")
+                extrato.write("="*40 + "\n")
+                extrato.write(f"Cliente: {nome_cliente}\n")
+                extrato.write(f"Item: {animal_comprado['nome']} (Animal)\n")
+                extrato.write(f"Brinco: {animal_comprado['brinco']}\n")
+                extrato.write(f"Valor Pago: R$ {animal_comprado['valor']}\n")
+                extrato.write("="*40 + "\n\n")
+            
+            print(f"Extrato atualizado em: {nome_extrato}")
+            
+            salvarArquivo()
+            return
+            
+    print('Animal não encontrado com este brinco!')
+
+
+
 def salvarArquivo():
     with open("atualizacaov2/arquivos/animais.txt", "w", encoding="utf-8") as arq:
         for a in animais:
