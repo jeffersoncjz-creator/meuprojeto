@@ -1,3 +1,9 @@
+from tabulate import tabulate
+import csv
+import os
+
+ARQUIVO_VENDAS = "atualizacaov2/arquivos/vendas.csv"
+
 produtos = []
 
 def cadastrarProduto():
@@ -24,17 +30,62 @@ def cadastrarProduto():
     print('\nProduto cadastrado com sucesso!\n')
 
 def buscarProdutoPorNome(nome):
-    print('-' * 50)
+
+    tabela = []
+
     for p in produtos:
-        if p['nome'] == nome:
-            print(p['nome'], ' | ', p['codigo'], ' | ', p['valor'], ' | Qtd: ', p['quantidade']) 
-    print('-' * 50)
+
+        if p['nome'].lower() == nome.lower():
+
+            tabela.append([
+                p['codigo'],
+                p['nome'],
+                f"R$ {float(p['valor']):.2f}",
+                p['quantidade']])
+
+    if not tabela:
+
+        print("\nProduto não encontrado.\n")
+        return
+
+    print(tabulate(
+            tabela,
+            headers=[
+                "Código",
+                "Produto",
+                "Valor",
+                "Quantidade"
+            ],
+            tablefmt="grid"))
 
 def listarProdutos():
-    print('-' * 50)
+
+    if not produtos:
+        print("\nNenhum produto cadastrado.\n")
+        return
+
+    tabela = []
+
     for p in produtos:
-        print(p['nome'], ' | ', p['codigo'], ' | ', p['valor'], ' | Qtd: ', p['quantidade']) 
-    print('-' * 50)
+
+        tabela.append([
+            p['codigo'],
+            p['nome'],
+            f"R$ {float(p['valor']):.2f}",
+            p['quantidade'] ])
+
+    print("\nESTOQUE DE PRODUTOS\n")
+
+    print(
+        tabulate(
+            tabela,
+            headers=[
+                "Código",
+                "Produto",
+                "Valor",
+                "Quantidade"
+            ],
+            tablefmt="grid"))
 
 def alterarProduto(codigo):
     print('Para alterar informe o dado abaixo')
@@ -52,12 +103,10 @@ def alterarProduto(codigo):
             valor = input('Digite o novo valor: ').strip()
             quantidade = input('Digite a nova quantidade: ').strip()
             
-            p = {
-                "nome": nome, 
+            p = {"nome": nome, 
                 "codigo": codigo_novo, 
                 "valor": valor, 
-                "quantidade": quantidade
-            }
+                "quantidade": quantidade}
     
             produtos[posicao] = p
             print('\n\nProduto alterado com sucesso!\n\n')
@@ -73,8 +122,14 @@ def apagarProduto(codigo):
 
 
 def venderProduto(nome_cliente):
+
     print('\n--- VENDA DE PRODUTO ---')
-    codigo = input('Digite o código do produto que deseja comprar: ').strip()
+
+    listarProdutos()
+
+    codigo = input(
+        '\nDigite o código do produto que deseja comprar: '
+    ).strip()
     
     for posicao in range(len(produtos)):
         if produtos[posicao]['codigo'] == codigo:
@@ -99,7 +154,28 @@ def venderProduto(nome_cliente):
 
             preco_unitario = float(produtos[posicao]['valor'])
             total_pago = preco_unitario * qtd_venda
-            
+            arquivo_existe = os.path.exists(ARQUIVO_VENDAS)
+
+            with open(ARQUIVO_VENDAS, "a", newline="", encoding="utf-8") as arquivo:
+
+                escritor = csv.writer(arquivo)
+                if not arquivo_existe:
+
+                    escritor.writerow([
+                        "tipo",
+                        "cliente",
+                        "item",
+                        "quantidade",
+                        "valor"
+                    ])
+
+                escritor.writerow([
+                    "PRODUTO",
+                    nome_cliente,
+                    produtos[posicao]["nome"],
+                    qtd_venda,
+                    total_pago
+                ])
             print(f"\nVenda realizada com sucesso para o cliente: {nome_cliente}!")
             print(f"Total a pagar: R$ {total_pago:.2f}\n")
             

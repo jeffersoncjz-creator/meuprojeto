@@ -1,3 +1,9 @@
+from tabulate import tabulate
+import csv
+import os
+
+ARQUIVO_VENDAS = "atualizacaov2/arquivos/vendas.csv"
+
 
 
 animais = []
@@ -20,28 +26,102 @@ def cadastrarAnimal():
     print('\nAnimal cadastrado com sucesso!\n')
 
 def buscarAnimalPorNome(nome):
-    print('-' * 50)
-    for a in animais:
-        if a['nome'] == nome:
-            print(a['nome'], ' | ', a['brinco'], ' | ', a['valor']) 
-    print('-' * 50)
 
-def buscarAnimalPorBrinco():
-    brinco = input('Digite o brinco do animal: ')
-    print('-' * 50)
+    tabela = []
+
     for a in animais:
+
+        if a['nome'].lower() == nome.lower():
+
+            tabela.append([
+                a['brinco'],
+                a['nome'],
+                f"R$ {float(a['valor']):.2f}"
+            ])
+
+    if not tabela:
+
+        print("\nAnimal não encontrado.\n")
+        return
+
+    print(
+        tabulate(
+            tabela,
+            headers=[
+                "Brinco",
+                "Nome",
+                "Valor"
+            ],
+            tablefmt="grid"
+        )
+    )
+
+def buscarAnimalPorBrinco(brinco):
+
+    tabela = []
+
+    for a in animais:
+
         if a['brinco'] == brinco:
-            print(a['nome'], ' | ', a['brinco'], ' | ', a['valor']) 
-    print('-' * 50)
+
+            tabela.append([
+                a['brinco'],
+                a['nome'],
+                f"R$ {float(a['valor']):.2f}"
+            ])
+
+    if not tabela:
+
+        print("\nAnimal não encontrado.\n")
+        return
+
+    print(
+        tabulate(
+            tabela,
+            headers=[
+                "Brinco",
+                "Nome",
+                "Valor"
+            ],
+            tablefmt="grid"
+        )
+    )
 
 def listarAnimais():
-    print('-' * 50)
+
+    if not animais:
+        print("\nNenhum animal cadastrado.\n")
+        return
+
+    tabela = []
+
     for a in animais:
-        print(a['nome'], ' | ', a['brinco'], ' | ', a['valor']) 
-    print('-' * 50)
+
+        tabela.append([
+            a['brinco'],
+            a['nome'],
+            f"R$ {float(a['valor']):.2f}"
+        ])
+
+    print("\nANIMAIS CADASTRADOS\n")
+
+    print(
+        tabulate(
+            tabela,
+            headers=[
+                "Brinco",
+                "Nome",
+                "Valor"
+            ],
+            tablefmt="grid"
+        )
+    )
 
 def alterarAnimal(brinco):
-    print('Para alterar informe o dado abaixo')
+
+    listarAnimais()
+
+    print('\nPara alterar informe os novos dados:')
     for posicao in range(len(animais)):
         if animais[posicao]['brinco'] == brinco:
             nome = input('Digite o novo nome: ')
@@ -70,13 +150,41 @@ def apagarAnimal(brinco):
 
 def comprarAnimal(nome_cliente):
     print('\n--- COMPRA DE ANIMAL ---')
-    brinco = input('Digite o brinco do animal que deseja comprar: ').strip()
+
+    listarAnimais()
+
+    brinco = input(
+    '\nDigite o brinco do animal que deseja comprar: '
+).strip()
     
 
     for posicao in range(len(animais)):
         if animais[posicao]['brinco'] == brinco:
             
             animal_comprado = animais.pop(posicao)
+            
+            arquivo_existe = os.path.exists(ARQUIVO_VENDAS)
+            with open(ARQUIVO_VENDAS, "a", newline="", encoding="utf-8") as arquivo:
+
+                escritor = csv.writer(arquivo)
+
+            if not arquivo_existe:
+
+                escritor.writerow([
+                    "tipo",
+                    "cliente",
+                    "item",
+                    "quantidade",
+                    "valor"
+                ])
+
+            escritor.writerow([
+                "ANIMAL",
+                nome_cliente,
+                animal_comprado["nome"],
+                1,
+                animal_comprado["valor"]
+            ])
             
             print(f"\nCompra realizada com sucesso para o cliente: {nome_cliente}!")
             print(f"Animal: {animal_comprado['nome']} | Valor: R$ {animal_comprado['valor']}\n")

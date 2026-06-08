@@ -1,56 +1,132 @@
+import bcrypt
 
+ARQUIVO_USUARIOS = "atualizacaov2/arquivos/usuarios.txt"
 
-with open("atualizacaov2/arquivos/usuarios.txt", "a", encoding="utf-8") as arquivo:
+# Cria o arquivo caso não exista
+with open(ARQUIVO_USUARIOS, "a", encoding="utf-8"):
     pass
 
+
 def cadastrausuario(login, senha, tipo):
-    with open("atualizacaov2/arquivos/usuarios.txt", "r", encoding="utf-8") as arquivo:
+
+    # Verifica se o usuário já existe
+    with open(ARQUIVO_USUARIOS, "r", encoding="utf-8") as arquivo:
+
         for linha in arquivo:
+
             dados = linha.strip().split(';')
+
             if len(dados) == 3 and dados[0] == login:
                 return False
 
-    with open("atualizacaov2/arquivos/usuarios.txt", "a", encoding="utf-8") as arquivo:
-        arquivo.write(f"{login};{senha};{tipo}\n")
+    # Criptografa a senha
+    senha_hash = bcrypt.hashpw(
+        senha.encode('utf-8'),
+        bcrypt.gensalt()
+    ).decode('utf-8')
+
+    # Salva usuário
+    with open(ARQUIVO_USUARIOS, "a", encoding="utf-8") as arquivo:
+
+        arquivo.write(
+            f"{login};{senha_hash};{tipo}\n"
+        )
+
     return True
 
 
-def login(login, senha):
-    with open("atualizacaov2/arquivos/usuarios.txt", "r", encoding="utf-8") as arquivo:
+def login(login_usuario, senha):
+
+    with open(ARQUIVO_USUARIOS, "r", encoding="utf-8") as arquivo:
+
         for linha in arquivo:
+
             dados = linha.strip().split(';')
-            if len(dados) == 3 and dados[0] == login and dados[1] == senha:
-                return dados[2]
-                
-    return None 
+
+            if len(dados) != 3:
+                continue
+
+            usuario = dados[0]
+            senha_salva = dados[1]
+            tipo = dados[2]
+
+            if usuario == login_usuario:
+
+                try:
+
+                    if bcrypt.checkpw(
+                        senha.encode('utf-8'),
+                        senha_salva.encode('utf-8')
+                    ):
+                        return tipo
+
+                except ValueError:
+                    # Linha antiga sem hash bcrypt
+                    continue
+
+    return None
 
 
 def menu_user_cadastrar():
-    nome = input('Digite o usuário: ')
-    senha = input('Digite a senha: ')
-    
+
+    print('\n===== CADASTRO DE USUÁRIO =====')
+
+    nome = input('Digite o usuário: ').strip()
+    senha = input('Digite a senha: ').strip()
+
     while True:
-        tipo = input('Tipo (1 - ADMINISTRADOR | 2 - CLIENTE): ')
+
+        tipo = input(
+            'Tipo (1 - ADMINISTRADOR | 2 - CLIENTE): '
+        ).strip()
+
         if tipo in ['1', '2']:
             break
-        else:
-            print('Tipo inválido! Por favor, digite apenas 1 ou 2.\n')
 
-    sucesso = cadastrausuario(nome, senha, tipo)
+        print('Tipo inválido! Digite apenas 1 ou 2.\n')
+
+    sucesso = cadastrausuario(
+        nome,
+        senha,
+        tipo
+    )
+
     if sucesso:
         print('\nUsuário cadastrado com sucesso!')
     else:
-        print('\nEste nome de usuário já está cadastrado. Tente outro.')
+        print(
+            '\nEste nome de usuário já está cadastrado.'
+        )
+
 
 def menu_user_login():
-    nome = input('Usuário: ')
-    senha = input('Senha: ')
-    
-    usuario = login(nome, senha)
-    
+
+    print('\n===== LOGIN =====')
+
+    nome = input('Usuário: ').strip()
+    senha = input('Senha: ').strip()
+
+    usuario = login(
+        nome,
+        senha
+    )
+
     if usuario:
-        funcao = "ADMINISTRADOR" if usuario == "1" else "CLIENTE"
-        print(f'\nBem-vindo, {nome}! Você está logado com sucesso como {funcao}!')
-        return funcao
-    else:
-        return None
+
+        funcao = (
+            "ADMINISTRADOR"
+            if usuario == "1"
+            else "CLIENTE"
+        )
+
+        print(
+            f'\nBem-vindo, {nome}! '
+            f'Você está logado como {funcao}.'
+        )
+
+        return {
+            "nome": nome,
+            "tipo": funcao
+        }
+
+    return None

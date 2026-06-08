@@ -1,7 +1,4 @@
-as;as;1
-qw;qw;2
-1;1;1
-asdf;asdf;1
-sd;sd;1
-io;io;2
-ediclea;12345;1
+jeff;$2b$12$UjXSqARlYbjJHvMcXEdSoeZQ9ztb4eoNIGlChq8FLnPl2pzTAV7fS;1
+edi;$2b$12$MZdgzEFY4IBfIo4s1/pXderUlJDyou7Mv46NBRzIkVYwR0SrC09WK;2
+niu;$2b$12$HrmgpQwwSgkQqMdfTGcOROgfy8TZ7IsiogWZ3rTnXNHn8F6oypqV6;1
+lud;$2b$12$rRAOoNdM74oE50h1tWcA8OHNzDmC3jGBizicJWvTFES7ODHG9FBTO;2
