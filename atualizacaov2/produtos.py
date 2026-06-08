@@ -1,4 +1,5 @@
 from tabulate import tabulate
+import relatorios as rt
 import csv
 import os
 
@@ -27,6 +28,9 @@ def cadastrarProduto():
         "quantidade": quantidade
     }
     produtos.append(novo_produto)
+
+    rt.registrar_movimentacao('ENTRADA ESTOQUE', nome, quantidade)
+
     print('\nProduto cadastrado com sucesso!\n')
 
 def buscarProdutoPorNome(nome):
@@ -110,6 +114,9 @@ def alterarProduto(codigo):
     
             produtos[posicao] = p
             print('\n\nProduto alterado com sucesso!\n\n')
+
+            rt.registrar_movimentacao('ENTRADA ESTOQUE', nome, quantidade)
+
             return
     print('Produto não encontrado!')
 
@@ -122,7 +129,6 @@ def apagarProduto(codigo):
 
 
 def venderProduto(nome_cliente):
-
     print('\n--- VENDA DE PRODUTO ---')
 
     listarProdutos()
@@ -141,26 +147,21 @@ def venderProduto(nome_cliente):
                 
             qtd_atual = float(produtos[posicao]['quantidade'])
             
-
             if qtd_venda > qtd_atual:
                 print(f"\nErro: Estoque insuficiente! Você tentou comprar {qtd_venda}, mas só temos {qtd_atual} em estoque.")
                 print("Venda cancelada!\n")
                 return
             
-
             nova_qtd = qtd_atual - qtd_venda
             produtos[posicao]['quantidade'] = str(nova_qtd)
             
-
             preco_unitario = float(produtos[posicao]['valor'])
             total_pago = preco_unitario * qtd_venda
             arquivo_existe = os.path.exists(ARQUIVO_VENDAS)
 
             with open(ARQUIVO_VENDAS, "a", newline="", encoding="utf-8") as arquivo:
-
                 escritor = csv.writer(arquivo)
                 if not arquivo_existe:
-
                     escritor.writerow([
                         "tipo",
                         "cliente",
@@ -176,6 +177,7 @@ def venderProduto(nome_cliente):
                     qtd_venda,
                     total_pago
                 ])
+                
             print(f"\nVenda realizada com sucesso para o cliente: {nome_cliente}!")
             print(f"Total a pagar: R$ {total_pago:.2f}\n")
             
@@ -194,10 +196,24 @@ def venderProduto(nome_cliente):
             
             print(f"Extrato impresso e salvo em: {nome_extrato}")
             
+            nome_do_produto = produtos[posicao]['nome']
+            
+            imprimir_comprovante_termico(nome_cliente, nome_do_produto, total_pago)
+
+            rt.registrar_movimentacao('VENDA', nome_do_produto, qtd_venda)
             salvarArquivo()
             return
             
     print('Produto não encontrado!')
+
+def imprimir_comprovante_termico(nome_cliente, produto, valor):
+    caminho_arquivo = f"atualizacaov2/arquivos/extrato_{nome_cliente}.txt"
+    caminho_absoluto = os.path.abspath(caminho_arquivo)
+    try:
+        os.startfile(caminho_absoluto, "print")
+        print("Documento enviado para a fila do Windows com sucesso!")
+    except Exception as e:
+        print(f"Erro ao tentar imprimir: {e}")
 
 
 def salvarArquivo():

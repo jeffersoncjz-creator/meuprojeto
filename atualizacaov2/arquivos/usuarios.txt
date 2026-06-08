@@ -1,5 +1,3 @@
-jeff;$2b$12$UjXSqARlYbjJHvMcXEdSoeZQ9ztb4eoNIGlChq8FLnPl2pzTAV7fS;1
-edi;$2b$12$MZdgzEFY4IBfIo4s1/pXderUlJDyou7Mv46NBRzIkVYwR0SrC09WK;2
-niu;$2b$12$HrmgpQwwSgkQqMdfTGcOROgfy8TZ7IsiogWZ3rTnXNHn8F6oypqV6;1
-lud;$2b$12$rRAOoNdM74oE50h1tWcA8OHNzDmC3jGBizicJWvTFES7ODHG9FBTO;2
-lucas;$2b$12$NKYrJi8p9Tm.y2XcXFIXkeWdUPlUW4xQQtjGjYgf8yeoKWu7HTTzK;2
+
+jefferson;$2b$12$Hw2RwMrn./v5g4aSNxHasOlzNU/wKnzY9qldreUcddDJyz//x6y4S;1
+edicela;$2b$12$4c0P3iJ1HczV51xoiLdl1uIsIzYGaFMkUUsigWJZ4vrbRbUno6N4S;2

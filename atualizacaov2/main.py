@@ -4,23 +4,25 @@ import auth as user
 import animal as fa
 import produtos as pd
 import relatorios as rl
+import relatorios as rt
 
 fa.iniciarArquivo()
 pd.iniciarArquivo()
-
+rt.iniciarArquivoHistorico()
 
 def menuRelatorios():
 
     while True:
 
         print("\n===== RELATÓRIOS =====")
-        print("1 - Relatório de vendas")
-        print("2 - Total faturado")
-        print("3 - Estoque baixo")
-        print("4 - Quantidade de animais")
-        print("5 - Exportar produtos CSV")
-        print("6 - Exportar animais CSV")
-        print("0 - Voltar")
+        print("1 - RELATÓRIO DE VENDAS DE PRODUTOS")
+        print("2 - TOTAL FATURADO")
+        print("3 - ESTOQUE BAIXO")
+        print("4 - QUANTIDADE DE ANIMAIS")
+        print("5 - EXPORTAR PRODUTOS CSV")
+        print("6 - EXPORTAR ANIMAIS CSV")
+        print("7 - LISTAR MOVIMENTAÇÕES")
+        print("0 - VOLTAR")
 
         op = input("Digite a opção: ").strip()
         if op == "1":rl.relatorioVendas()
@@ -29,6 +31,7 @@ def menuRelatorios():
         elif op == "4":rl.quantidadeAnimais()
         elif op == "5":rl.exportarProdutosCSV()
         elif op == "6":rl.exportarAnimaisCSV()
+        elif op == "7":rt.listar_historico()
         elif op == "0":
             break
 
@@ -36,7 +39,7 @@ def iniciarMenuCliente(nome_do_usuario):
 
     while True:
 
-        print('\n==================== MENU CLIENTE ====================')
+        print('\n==================== MENU CLIENTE ==================')
         print('1 - VER PRODUTOS DISPONÍVEIS')
         print('2 - COMPRAR PRODUTO')
         print('3 - VER ANIMAIS DISPONÍVEIS')
@@ -76,7 +79,7 @@ def iniciarMenuAdministrador():
         print('9 - REMOVER PRODUTO')
         print('10 - RELATÓRIOS')
         print('0 - RETORNAR MENU INICIAL')
-        print('======================================================')
+        print('========================================================')
 
         op = input('Digite a opção: ').strip()
 
@@ -126,13 +129,13 @@ def menuPrincipal():
 
     while True:
 
-        print('\n======================')
-        print('    FAZENDA SERTÃO')
-        print('======================')
+        print('======================================================')
+        print('                  FAZENDA SERTÃO')
+        print('======================================================')
         print('1 - CADASTRAR USUÁRIO')
         print('2 - FAZER LOGIN')
         print('0 - SAIR')
-        print('======================')
+        print('======================================================')
 
         opcao = input('Digite a opção: ').strip()
         if opcao == '1':

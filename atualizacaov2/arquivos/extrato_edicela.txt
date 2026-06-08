@@ -1,20 +1,20 @@
 ========================================
           EXTRATO DE COMPRA          
 ========================================
-Cliente: Jeff
-Item: vaca (Animal)
-Brinco: 1
-Valor Pago: R$ 1000
+Cliente: edicela
+Produto: queijo
+Código: 1
+Quantidade Comprada: 10.0
+Preço Unitário: R$ 40.00
+Valor Total: R$ 400.00
 ========================================
 
 ========================================
           EXTRATO DE COMPRA          
 ========================================
-Cliente: jeff
-Produto: arroz
-Código: 22
-Quantidade Comprada: 10.0
-Preço Unitário: R$ 4.00
-Valor Total: R$ 40.00
+Cliente: edicela
+Item: boi (Animal)
+Brinco: 4
+Valor Pago: R$ 1000
 ========================================
 

@@ -2,14 +2,13 @@ import bcrypt
 
 ARQUIVO_USUARIOS = "atualizacaov2/arquivos/usuarios.txt"
 
-# Cria o arquivo caso não exista
+
 with open(ARQUIVO_USUARIOS, "a", encoding="utf-8"):
     pass
 
 
 def cadastrausuario(login, senha, tipo):
 
-    # Verifica se o usuário já existe
     with open(ARQUIVO_USUARIOS, "r", encoding="utf-8") as arquivo:
 
         for linha in arquivo:
@@ -19,13 +18,11 @@ def cadastrausuario(login, senha, tipo):
             if len(dados) == 3 and dados[0] == login:
                 return False
 
-    # Criptografa a senha
     senha_hash = bcrypt.hashpw(
         senha.encode('utf-8'),
         bcrypt.gensalt()
     ).decode('utf-8')
 
-    # Salva usuário
     with open(ARQUIVO_USUARIOS, "a", encoding="utf-8") as arquivo:
 
         arquivo.write(
@@ -61,7 +58,7 @@ def login(login_usuario, senha):
                         return tipo
 
                 except ValueError:
-                    # Linha antiga sem hash bcrypt
+
                     continue
 
     return None
@@ -69,9 +66,9 @@ def login(login_usuario, senha):
 
 def menu_user_cadastrar():
 
-    print('\n===== CADASTRO DE USUÁRIO =====')
+    print('\n====== CADASTRO DE USUÁRIO ======')
 
-    nome = input('Digite o usuário: ').strip()
+    nome = input('Digite o usuário: ').strip().lower()
     senha = input('Digite a senha: ').strip()
 
     while True:
@@ -101,9 +98,9 @@ def menu_user_cadastrar():
 
 def menu_user_login():
 
-    print('\n===== LOGIN =====')
+    print('\n======== LOGIN ========')
 
-    nome = input('Usuário: ').strip()
+    nome = input('Usuário: ').strip().lower()
     senha = input('Senha: ').strip()
 
     usuario = login(
