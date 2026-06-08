@@ -1,4 +1,0 @@
-garrote,6,1000
-bode,3,500
-cabrito,4,100
-bode,2,500

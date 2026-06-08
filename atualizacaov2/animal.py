@@ -1,6 +1,8 @@
 from tabulate import tabulate
+from escpos.printer import Win32Raw
 import csv
 import os
+
 
 ARQUIVO_VENDAS = "atualizacaov2/arquivos/vendas.csv"
 
@@ -153,38 +155,36 @@ def comprarAnimal(nome_cliente):
 
     listarAnimais()
 
-    brinco = input(
-    '\nDigite o brinco do animal que deseja comprar: '
-).strip()
+    brinco = input('\nDigite o brinco do animal que deseja comprar: ').strip()
     
-
     for posicao in range(len(animais)):
         if animais[posicao]['brinco'] == brinco:
             
             animal_comprado = animais.pop(posicao)
             
             arquivo_existe = os.path.exists(ARQUIVO_VENDAS)
+            
+            # 1ª CORREÇÃO: Tudo que escreve no CSV precisa ficar 'dentro' (recuado) no with
             with open(ARQUIVO_VENDAS, "a", newline="", encoding="utf-8") as arquivo:
-
                 escritor = csv.writer(arquivo)
 
-            if not arquivo_existe:
+                if not arquivo_existe:
+                    escritor.writerow([
+                        "tipo",
+                        "cliente",
+                        "item",
+                        "quantidade",
+                        "valor"
+                    ])
 
                 escritor.writerow([
-                    "tipo",
-                    "cliente",
-                    "item",
-                    "quantidade",
-                    "valor"
+                    "ANIMAL",
+                    nome_cliente,
+                    animal_comprado["nome"],
+                    1,
+                    animal_comprado["valor"]
                 ])
-
-            escritor.writerow([
-                "ANIMAL",
-                nome_cliente,
-                animal_comprado["nome"],
-                1,
-                animal_comprado["valor"]
-            ])
+            # Fim do bloco 'with' - o arquivo csv é fechado aqui com segurança
             
             print(f"\nCompra realizada com sucesso para o cliente: {nome_cliente}!")
             print(f"Animal: {animal_comprado['nome']} | Valor: R$ {animal_comprado['valor']}\n")
@@ -202,12 +202,33 @@ def comprarAnimal(nome_cliente):
             
             print(f"Extrato atualizado em: {nome_extrato}")
             
+            # =================================================================
+            # 2ª CORREÇÃO: Variáveis ajustadas para a compra de ANIMAL
+            # =================================================================
+            nome_do_animal = animal_comprado['nome']
+            valor_pago = float(animal_comprado['valor'])
+            
+            # Agora sim, manda os dados corretos do animal para a impressora
+            imprimir_comprovante_termico(nome_cliente, nome_do_animal, valor_pago)
+
             salvarArquivo()
             return
             
     print('Animal não encontrado com este brinco!')
 
-
+def imprimir_comprovante_termico(nome_cliente, produto, valor):
+    # Pega o caminho do arquivo gerado
+    caminho_arquivo = f"atualizacaov2/arquivos/extrato_{nome_cliente}.txt"
+    
+    # DICA DE OURO: O Windows prefere o caminho completo/absoluto para imprimir sem erros
+    caminho_absoluto = os.path.abspath(caminho_arquivo)
+    
+    try:
+        # Pede para o Windows imprimir
+        os.startfile(caminho_absoluto, "print")
+        print("🖨️  Documento enviado para a fila do Windows com sucesso!")
+    except Exception as e:
+        print(f"❌ Erro ao tentar imprimir: {e}")
 
 def salvarArquivo():
     with open("atualizacaov2/arquivos/animais.txt", "w", encoding="utf-8") as arq:
