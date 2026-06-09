@@ -1,5 +1,7 @@
 from tabulate import tabulate
 from escpos.printer import Win32Raw
+from datetime import datetime
+
 import csv
 import os
 import relatorios as rt
@@ -10,23 +12,30 @@ animais = []
 
 def cadastrarAnimal():
     print('\n--- CADASTRO DE ANIMAL ---')
-    brinco = input('Digite o brinco: ')
+    brinco = input('Digite o brinco: ').strip()
     
     for a in animais:
         if a['brinco'] == brinco:
-            print(f'\nO brinco "{brinco}" já está cadastrado para o animal "{a["nome"]}".')
-            print('Cadastro cancelado!\n')
+            print(f'\nO brinco "{brinco}" já está cadastrado!')
             return
             
-    nome = input('Digite o nome do animal: ')
-    valor = input('Digite o valor: ')
+    nome = input('Digite o nome do animal: ').strip()
     
-    novo_animal = {"nome": nome, "brinco": brinco, "valor": valor}
+    while True:
+        valor_str = input('Digite o valor (ex: 500.00): ').strip()
+
+        try:
+            valor = float(valor_str)
+            break
+        except ValueError:
+            print("Valor inválido! Digite apenas números (use ponto para centavos).")
+    
+    novo_animal = {"nome": nome, "brinco": brinco, "valor": str(valor)}
+    
     animais.append(novo_animal)
     print('\nAnimal cadastrado com sucesso!\n')
     
-    rt.registrar_movimentacao('ENTRADA ANIMAL', nome, 1)
-
+    rt.registrar_movimentacao("ADMIN", 'ENTRADA ANIMAL', nome, 1)
     salvarArquivo()
 
 def buscarAnimalPorNome(nome):
@@ -80,10 +89,16 @@ def listarAnimais():
 
     tabela = []
     for a in animais:
+
+        try:
+            valor_num = float(a['valor']) if a['valor'] != '' else 0.0
+        except ValueError:
+            valor_num = 0.0
+            
         tabela.append([
             a['brinco'],
             a['nome'],
-            f"R$ {float(a['valor']):.2f}"
+            f"R$ {valor_num:.2f}"
         ])
 
     print("\nANIMAIS CADASTRADOS\n")
@@ -124,7 +139,7 @@ def apagarAnimal(brinco):
             animal_removido = animais.pop(posicao)
             print('Animal removido com sucesso!')
             
-            rt.registrar_movimentacao('REMOÇÃO ANIMAL', animal_removido['nome'], 1)
+            rt.registrar_movimentacao("ADMIN", 'REMOÇÃO ANIMAL', animal_removido['nome'], 1)
             break
 
 def comprarAnimal(nome_cliente):
@@ -161,17 +176,20 @@ def comprarAnimal(nome_cliente):
             
             print(f"\nCompra realizada com sucesso para o cliente: {nome_cliente}!")
             print(f"Animal: {animal_comprado['nome']} | Valor: R$ {animal_comprado['valor']}\n")
+            valor_formatado = f"{float(animal_comprado['valor']):.2f}".replace('.', ',')
             
+            agora = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
             nome_extrato = f"atualizacaov2/arquivos/extrato_{nome_cliente}.txt"
             with open(nome_extrato, "a", encoding="utf-8") as extrato:
-                extrato.write("="*40 + "\n")
-                extrato.write("          EXTRATO DE COMPRA          \n")
-                extrato.write("="*40 + "\n")
+                extrato.write("="*18 + "\n")
+                extrato.write("EXTRATO DE COMPRA\n")
+                extrato.write("="*18 + "\n")
+                extrato.write(f"Data/Hora: {agora}\n")
                 extrato.write(f"Cliente: {nome_cliente}\n")
                 extrato.write(f"Item: {animal_comprado['nome']} (Animal)\n")
                 extrato.write(f"Brinco: {animal_comprado['brinco']}\n")
-                extrato.write(f"Valor Pago: R$ {animal_comprado['valor']}\n")
-                extrato.write("="*40 + "\n\n")
+                extrato.write(f"Valor Pago: R$ {valor_formatado}\n")
+                extrato.write("="*36 + "\n\n")
             
             print(f"Extrato atualizado em: {nome_extrato}")
             
@@ -180,7 +198,7 @@ def comprarAnimal(nome_cliente):
             
             imprimir_comprovante_termico(nome_cliente, nome_do_animal, valor_pago)
 
-            rt.registrar_movimentacao('VENDA ANIMAL', nome_do_animal, 1)
+            rt.registrar_movimentacao(nome_cliente, 'VENDA ANIMAL', nome_do_animal, 1)
 
             salvarArquivo()
             return

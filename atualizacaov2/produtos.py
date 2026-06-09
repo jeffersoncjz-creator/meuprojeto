@@ -1,5 +1,6 @@
 from tabulate import tabulate
 import relatorios as rt
+from datetime import datetime
 import csv
 import os
 
@@ -29,7 +30,7 @@ def cadastrarProduto():
     }
     produtos.append(novo_produto)
 
-    rt.registrar_movimentacao('ENTRADA ESTOQUE', nome, quantidade)
+    rt.registrar_movimentacao("ADMIN", 'ENTRADA ESTOQUE', nome, quantidade)
 
     print('\nProduto cadastrado com sucesso!\n')
 
@@ -181,18 +182,20 @@ def venderProduto(nome_cliente):
             print(f"\nVenda realizada com sucesso para o cliente: {nome_cliente}!")
             print(f"Total a pagar: R$ {total_pago:.2f}\n")
             
+            agora = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
             nome_extrato = f"atualizacaov2/arquivos/extrato_{nome_cliente}.txt"
             with open(nome_extrato, "a", encoding="utf-8") as extrato:
-                extrato.write("="*40 + "\n")
-                extrato.write("          EXTRATO DE COMPRA          \n")
-                extrato.write("="*40 + "\n")
+                extrato.write("="*18 + "\n")
+                extrato.write("EXTRATO DE COMPRA\n")
+                extrato.write("="*18 + "\n")
+                extrato.write(f"Data/Hora: {agora}\n")
                 extrato.write(f"Cliente: {nome_cliente}\n")
                 extrato.write(f"Produto: {produtos[posicao]['nome']}\n")
                 extrato.write(f"Código: {produtos[posicao]['codigo']}\n")
                 extrato.write(f"Quantidade Comprada: {qtd_venda}\n")
                 extrato.write(f"Preço Unitário: R$ {preco_unitario:.2f}\n")
                 extrato.write(f"Valor Total: R$ {total_pago:.2f}\n")
-                extrato.write("="*40 + "\n\n")
+                extrato.write("="*36 + "\n\n")
             
             print(f"Extrato impresso e salvo em: {nome_extrato}")
             
@@ -200,7 +203,7 @@ def venderProduto(nome_cliente):
             
             imprimir_comprovante_termico(nome_cliente, nome_do_produto, total_pago)
 
-            rt.registrar_movimentacao('VENDA', nome_do_produto, qtd_venda)
+            rt.registrar_movimentacao(nome_cliente, 'VENDA', nome_do_produto, qtd_venda)
             salvarArquivo()
             return
             

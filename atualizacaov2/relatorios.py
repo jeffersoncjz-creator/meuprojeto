@@ -16,7 +16,7 @@ def iniciarArquivoHistorico():
     if not os.path.exists(ARQUIVO_HISTORICO):
         with open(ARQUIVO_HISTORICO, "w", newline="", encoding="utf-8") as arquivo:
             escritor = csv.writer(arquivo)
-            escritor.writerow(["Data", "Acao", "Item", "Qtd"])
+            escritor.writerow(["Data", "Usuario", "Acao", "Item", "Qtd"]) # Adicionada coluna Usuario
         return
 
     with open(ARQUIVO_HISTORICO, "r", encoding="utf-8") as arquivo:
@@ -24,6 +24,7 @@ def iniciarArquivoHistorico():
         for linha in leitor:
             historico.append({
                 "data": linha["Data"],
+                "usuario": linha["Usuario"], # Adicionado
                 "acao": linha["Acao"],
                 "item": linha["Item"],
                 "qtd": linha["Qtd"]
@@ -33,16 +34,16 @@ def salvarArquivoHistorico():
     """Salva a lista de histórico no arquivo CSV."""
     with open(ARQUIVO_HISTORICO, "w", newline="", encoding="utf-8") as arquivo:
         escritor = csv.writer(arquivo)
-        escritor.writerow(["Data", "Acao", "Item", "Qtd"])
+        escritor.writerow(["Data", "Usuario", "Acao", "Item", "Qtd"])
         for h in historico:
-            escritor.writerow([h["data"], h["acao"], h["item"], h["qtd"]])
+            escritor.writerow([h["data"], h["usuario"], h["acao"], h["item"], h["qtd"]])
 
-def registrar_movimentacao(acao, item, qtd):
-    """Função chamada pelos outros arquivos para registrar a alteração."""
+def registrar_movimentacao(usuario, acao, item, qtd):
     data_atual = datetime.now().strftime('%d/%m %H:%M')
     
     novo_registro = {
         'data': data_atual,
+        'usuario': usuario, 
         'acao': acao.upper(),
         'item': item,
         'qtd': str(qtd)
@@ -50,26 +51,28 @@ def registrar_movimentacao(acao, item, qtd):
     
     historico.append(novo_registro)
     salvarArquivoHistorico()
+    
+    historico.append(novo_registro)
+    salvarArquivoHistorico()
 
 def listar_historico():
-    """Exibe o relatório de movimentação formatado com tabulate."""
+    """Exibe o relatório de movimentação."""
     if not historico:
         print("\nNenhuma movimentação registrada no histórico.\n")
         return
 
     tabela = []
     for h in historico:
-        tabela.append([h['data'], h['acao'], h['item'], h['qtd']])
+        tabela.append([h['data'], h['usuario'], h['acao'], h['item'], h['qtd']])
 
     print("\n================ HISTÓRICO DE MOVIMENTAÇÃO ================")
     print(
         tabulate(
             tabela,
-            headers=["Data/Hora", "Ação", "Item", "Quantidade"],
+            headers=["Data/Hora", "Usuário", "Ação", "Item", "Quantidade"],
             tablefmt="grid"
         )
     )
-    print("===========================================================\n")
 
 
 def relatorioVendas():
