@@ -74,7 +74,7 @@ def menu_user_cadastrar():
     while True:
 
         tipo = input(
-            'Tipo (1 - ADMINISTRADOR | 2 - CLIENTE): '
+            'Digite o nivel de acesso (1 - ADMINISTRADOR | 2 - CLIENTE): '
         ).strip()
 
         if tipo in ['1', '2']:
