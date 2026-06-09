@@ -73,7 +73,10 @@ def listar_historico():
             tablefmt="grid"
         )
     )
-
+    confirmacao = input("Deseja imprimir este relatório na impressora térmica? (s/n): ").strip().lower()
+    
+    if confirmacao == 's':
+        imprimir_historico_termico()
 
 def relatorioVendas():
     if not os.path.exists(ARQUIVO_VENDAS):
@@ -94,6 +97,11 @@ def relatorioVendas():
             tablefmt="grid"
         )
     )
+
+    confirmacao = input("Deseja imprimir este relatório na impressora térmica? (s/n): ").strip().lower()
+    
+    if confirmacao == 's':
+        imprimir_relatorio_vendas_termico()
 
 def totalFaturado():
     total = 0
@@ -149,3 +157,52 @@ def exportarAnimaisCSV():
         for a in animal.animais:
             escritor.writerow([a["brinco"], a["nome"], a["valor"]])
     print("\nAnimais exportados com sucesso!\n")
+
+def imprimir_historico_termico():
+    caminho_arquivo = "atualizacaov2/arquivos/historico_imprimir.txt"
+    
+    with open(caminho_arquivo, "w", encoding="utf-8") as f:
+        f.write("=== HISTORICO DE MOVIMENTACAO ===\n\n")
+        for h in historico:
+            f.write(f"Data: {h['data']} | Usuário: {h['usuario']}\n")
+            f.write(f"Ação: {h['acao']} | Item: {h['item']} (Qtd: {h['qtd']})\n")
+            f.write("-" * 32 + "\n")
+    
+    try:
+        os.startfile(os.path.abspath(caminho_arquivo), "print")
+        print("\nRelatório enviado para a impressora!")
+    except Exception as e:
+        print(f"\nErro ao imprimir: {e}")
+
+def imprimir_relatorio_vendas_termico():
+    if not os.path.exists(ARQUIVO_VENDAS):
+        print("\nNenhuma venda para imprimir.\n")
+        return
+
+    caminho_arquivo = "atualizacaov2/arquivos/vendas_imprimir.txt"
+    total_faturado = 0
+    
+    with open(ARQUIVO_VENDAS, "r", encoding="utf-8") as f_leitura:
+        leitor = csv.reader(f_leitura)
+        cabecalho = next(leitor, None)
+        
+        with open(caminho_arquivo, "w", encoding="utf-8") as f_escrita:
+            f_escrita.write("=== RELATORIO DE VENDAS ===\n\n")
+            
+            for linha in leitor:
+                
+                tipo, cliente, item, qtd, valor = linha
+                f_escrita.write(f"Cliente: {cliente}\n")
+                f_escrita.write(f"Item: {item} | Qtd: {qtd}\n")
+                f_escrita.write(f"Valor: R$ {valor.replace('.', ',')}\n")
+                f_escrita.write("-" * 32 + "\n")
+                total_faturado += float(valor)
+            
+            f_escrita.write(f"\nTOTAL FATURADO: R$ {total_faturado:.2f}".replace('.', ','))
+            f_escrita.write("\n\n")
+
+    try:
+        os.startfile(os.path.abspath(caminho_arquivo), "print")
+        print("\nRelatório de vendas enviado para a impressora!")
+    except Exception as e:
+        print(f"\nErro ao imprimir: {e}")
